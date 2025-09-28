@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movil/screens/login_screen.dart';
 import 'package:movil/screens/dashboard_screen.dart';
+import 'package:movil/screens/admin_cuotas_servicios_screen.dart';
 import 'package:movil/services/auth_service.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'SmartCondominium',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: const SplashScreen(),

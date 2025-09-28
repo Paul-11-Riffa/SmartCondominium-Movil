@@ -67,4 +67,34 @@ class FinancialService {
       return null;
     }
   }
+
+  // Método para obtener todas las facturas de un usuario
+  static Future<List<dynamic>> getFacturas() async {
+    try {
+      String? token = await _getToken();
+      if (token == null) return [];
+
+      // final currentUser = await AuthService.getCurrentUser();
+      // if (currentUser == null) return [];
+
+      final response = await http.get(
+        Uri.parse('$_baseUrl/facturas/'),
+        headers: <String, String>{
+          'Authorization': 'Token $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> body = jsonDecode(response.body);
+        return body; // Temporalmente devolver datos sin procesar
+      } else {
+        print('Error getFacturas: ${response.statusCode} - ${response.body}');
+        return [];
+      }
+    } catch (e) {
+      print('Excepción getFacturas: $e');
+      return [];
+    }
+  }
 }

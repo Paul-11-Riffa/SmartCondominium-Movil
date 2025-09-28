@@ -14,7 +14,7 @@ class Vehiculo {
   factory Vehiculo.fromJson(Map<String, dynamic> json) {
     return Vehiculo(
       id: json['id'],
-      nroplaca: json['nroplaca'],
+      nroplaca: json['nro_placa'],  // Corregido: usar el nombre correcto del campo del backend
       descripcion: json['descripcion'],
       estado: json['estado'],
     );
@@ -23,7 +23,7 @@ class Vehiculo {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'nroplaca': nroplaca,
+      'nro_placa': nroplaca,  // Corregido: usar el nombre correcto del campo del backend
       'descripcion': descripcion,
       'estado': estado,
     };

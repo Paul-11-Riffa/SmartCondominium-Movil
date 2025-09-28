@@ -45,7 +45,7 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
     
     return _properties.where((property) {
       final lowerSearchTerm = _searchTerm.toLowerCase();
-      return (property.nroCasa ?? '').toLowerCase().contains(lowerSearchTerm) ||
+      return (property.nroCasa?.toString() ?? '').toLowerCase().contains(lowerSearchTerm) ||
           (property.descripcion ?? '').toLowerCase().contains(lowerSearchTerm) ||
           (property.propietarioActual != null 
               ? (property.propietarioActual['nombre'] ?? '').toLowerCase().contains(lowerSearchTerm)
@@ -130,7 +130,7 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
                           child: Icon(Icons.home, color: Colors.white),
                         ),
                         title: Text(
-                          'Casa ${property.nroCasa ?? "N/A"}${property.piso != null ? ", Piso ${property.piso}" : ""}',
+                          'Casa ${property.nroCasaDisplay}${property.piso != null ? ", Piso ${property.piso}" : ""}',
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

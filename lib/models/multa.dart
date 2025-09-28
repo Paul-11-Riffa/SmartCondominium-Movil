@@ -28,4 +28,7 @@ class Multa {
       'estado': estado,
     };
   }
+
+  // Método auxiliar para mostrar el monto formateado
+  String get montoDisplay => monto != null ? 'Bs. ${monto!.toStringAsFixed(2)}' : 'N/A';
 }
