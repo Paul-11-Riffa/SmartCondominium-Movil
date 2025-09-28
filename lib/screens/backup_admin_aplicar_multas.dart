@@ -161,8 +161,6 @@ class _AdminAplicarMultasScreenSimpleState extends State<AdminAplicarMultasScree
       final _fechaLimiteController = TextEditingController();
 
       // Mostrar el formulario
-      print('DEBUG: ===== MOSTRANDO FORMULARIO =====');
-      print('DEBUG: Contexto válido: ${context.mounted}');
       showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -188,61 +186,75 @@ class _AdminAplicarMultasScreenSimpleState extends State<AdminAplicarMultasScree
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // Selector de propiedad
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(12),
+                  DropdownButtonFormField<Propiedad>(
+                    value: _selectedPropiedad,
+                    decoration: InputDecoration(
+                      labelText: 'Aplicar a la Unidad',
+                      prefixIcon: Icon(Icons.home),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                    child: DropdownButton<Propiedad>(
-                      value: _selectedPropiedad,
-                      hint: Text('Seleccione una unidad...'),
-                      isExpanded: true,
-                      underline: SizedBox(),
-                      items: propiedades.map((propiedad) {
-                        return DropdownMenuItem(
-                          value: propiedad,
-                          child: Text(
-                            propiedad.nroCasaDisplay,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setDialogState(() {
-                          _selectedPropiedad = value;
-                        });
-                      },
-                    ),
+                    hint: Text('Seleccione una unidad...'),
+                    items: propiedades.map((propiedad) {
+                      return DropdownMenuItem(
+                        value: propiedad,
+                        child: Text(propiedad.nroCasaDisplay),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setDialogState(() {
+                        _selectedPropiedad = value;
+                      });
+                    },
                   ),
                   SizedBox(height: 16),
                   // Selector de tipo de multa
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(12),
+                  DropdownButtonFormField<Multa>(
+                    value: _selectedMulta,
+                    decoration: InputDecoration(
+                      labelText: 'Tipo de Multa',
+                      prefixIcon: Icon(Icons.warning),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                    child: DropdownButton<Multa>(
-                      value: _selectedMulta,
-                      hint: Text('Seleccione una multa del catálogo...'),
-                      isExpanded: true,
-                      underline: SizedBox(),
-                      items: tiposMulta.map((multa) {
-                        return DropdownMenuItem(
-                          value: multa,
-                          child: Text(
-                            '${multa.descripcion ?? 'Sin descripción'} - Bs. ${multa.monto?.toStringAsFixed(2) ?? '0.00'}',
-                            overflow: TextOverflow.ellipsis,
+                    hint: Text(
+                      'Seleccione una multa del catálogo...',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    items: tiposMulta.map((multa) {
+                      return DropdownMenuItem(
+                        value: multa,
+                        child: Container(
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                multa.descripcion ?? 'Sin descripción',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                              Text(
+                                'Bs. ${multa.monto?.toStringAsFixed(2) ?? '0.00'}',
+                                style: TextStyle(
+                                  color: Colors.green.shade600,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setDialogState(() {
-                          _selectedMulta = value;
-                        });
-                      },
-                    ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setDialogState(() {
+                        _selectedMulta = value;
+                      });
+                    },
                   ),
                   SizedBox(height: 16),
                   // Fecha de emisión
@@ -352,8 +364,6 @@ class _AdminAplicarMultasScreenSimpleState extends State<AdminAplicarMultasScree
         ),
       ),
     );
-    
-    print('DEBUG: ===== FORMULARIO MOSTRADO EXITOSAMENTE =====');
     
     } catch (e) {
       // Cerrar diálogo de carga si aún está abierto

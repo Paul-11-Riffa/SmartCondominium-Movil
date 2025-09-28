@@ -6,13 +6,30 @@ import 'package:movil/services/api_service.dart';
 class AdminDetalleMultaService {
   static Future<List<DetalleMulta>> getAllDetallesMulta() async {
     try {
+      print('DEBUG: Intentando obtener todas las multas aplicadas...');
       final response = await ApiService.get('/detalle-multa/');
+      print('DEBUG: Respuesta de detalle-multa: $response');
       
       if (response is List) {
         return response.map<DetalleMulta>((data) => DetalleMulta.fromJson(data)).toList();
+      } else if (response is Map<String, dynamic> && response.containsKey('results')) {
+        // Manejar respuesta paginada de Django REST Framework
+        print('DEBUG: Respuesta paginada de multas aplicadas detectada');
+        final results = response['results'] as List;
+        print('DEBUG: ${results.length} multas aplicadas en results');
+        
+        if (results.isNotEmpty) {
+          final detallesMulta = results.map<DetalleMulta>((data) => DetalleMulta.fromJson(data)).toList();
+          print('DEBUG: ${detallesMulta.length} multas aplicadas procesadas del servidor');
+          return detallesMulta;
+        } else {
+          print('DEBUG: Lista results de multas aplicadas vacía');
+          return [];
+        }
       }
       throw Exception('Respuesta inesperada del servidor');
     } catch (e) {
+      print('DEBUG: Error al obtener detalles de multas: $e');
       throw Exception('Error al obtener detalles de multas: $e');
     }
   }
@@ -22,20 +39,47 @@ class AdminDetalleMultaService {
       print('DEBUG: Intentando obtener tipos de multa...');
       final response = await ApiService.get('/multas/');
       print('DEBUG: Respuesta de multas: $response');
+      print('DEBUG: Tipo de respuesta: ${response.runtimeType}');
+      print('DEBUG: Es null: ${response == null}');
       
-      if (response is List && response.isNotEmpty) {
-        final multas = response.map<Multa>((data) => Multa.fromJson(data)).toList();
-        print('DEBUG: ${multas.length} tipos de multa obtenidos del servidor');
-        return multas;
+      if (response != null) {
+        if (response is List) {
+          print('DEBUG: Respuesta es lista con ${response.length} elementos');
+          if (response.isNotEmpty) {
+            print('DEBUG: Primer elemento: ${response.first}');
+            final multas = response.map<Multa>((data) => Multa.fromJson(data)).toList();
+            print('DEBUG: ${multas.length} tipos de multa obtenidos del servidor');
+            return multas;
+          } else {
+            print('DEBUG: Lista vacía del servidor');
+            return [];
+          }
+        } else if (response is Map<String, dynamic> && response.containsKey('results')) {
+          // Manejar respuesta paginada de Django REST Framework
+          print('DEBUG: Respuesta paginada detectada');
+          final results = response['results'] as List;
+          print('DEBUG: ${results.length} multas en results');
+          
+          if (results.isNotEmpty) {
+            final multas = results.map<Multa>((data) => Multa.fromJson(data)).toList();
+            print('DEBUG: ${multas.length} tipos de multa procesados del servidor');
+            return multas;
+          } else {
+            print('DEBUG: Lista results vacía del servidor');
+            return [];
+          }
+        } else {
+          print('DEBUG: Respuesta no es lista ni paginada: $response');
+        }
       }
       
-      // Si no hay respuesta del servidor, usar datos de ejemplo
-      print('DEBUG: Usando datos de ejemplo para tipos de multa');
+      // Si llegamos aquí, hubo un problema
+      print('DEBUG: FALLBACK - Usando datos de ejemplo para tipos de multa');
       return _getTiposMultaEjemplo();
     } catch (e) {
       print('DEBUG: Error al obtener tipos de multa: $e');
       print('DEBUG: Tipo de error: ${e.runtimeType}');
-      print('DEBUG: Usando datos de ejemplo por error');
+      print('DEBUG: FALLBACK - Usando datos de ejemplo por error');
       return _getTiposMultaEjemplo();
     }
   }
@@ -85,6 +129,20 @@ class AdminDetalleMultaService {
         final propiedades = response.map<Propiedad>((data) => Propiedad.fromJson(data)).toList();
         print('DEBUG: ${propiedades.length} propiedades obtenidas del servidor');
         return propiedades;
+      } else if (response is Map<String, dynamic> && response.containsKey('results')) {
+        // Manejar respuesta paginada de Django REST Framework
+        print('DEBUG: Respuesta paginada de propiedades detectada');
+        final results = response['results'] as List;
+        print('DEBUG: ${results.length} propiedades en results');
+        
+        if (results.isNotEmpty) {
+          final propiedades = results.map<Propiedad>((data) => Propiedad.fromJson(data)).toList();
+          print('DEBUG: ${propiedades.length} propiedades procesadas del servidor');
+          return propiedades;
+        } else {
+          print('DEBUG: Lista results de propiedades vacía del servidor');
+          return [];
+        }
       }
       
       // Si no hay respuesta del servidor, usar datos de ejemplo
