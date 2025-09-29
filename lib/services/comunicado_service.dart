@@ -23,4 +23,21 @@ class ComunicadoService {
       throw Exception('Fallo al cargar los comunicados');
     }
   }
+
+  static Future<bool> createComunicado({
+    required String titulo,
+    required String contenido,
+  }) async {
+    final data = {
+      'titulo': titulo,
+      'contenido': contenido,
+      'tipo': 'General', // O el tipo que corresponda
+      'estado': 'Activo',
+    };
+
+    final response = await ApiService.post('comunicados/', data);
+
+    // La solicitud es exitosa si la respuesta no es nula
+    return response != null;
+  }
 }

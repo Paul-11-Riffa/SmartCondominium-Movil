@@ -14,6 +14,7 @@ import 'package:movil/screens/solicitudes_mantenimiento_screen.dart';
 import 'package:movil/screens/visitantes_screen.dart';
 import 'package:movil/screens/vehiculos_screen.dart';
 import 'package:movil/screens/reports_home_screen.dart';
+import 'package:movil/screens/admin_send_comunicado_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -312,6 +313,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Colors.brown,
             ReportsHomeScreen(),
             'Genera reportes del sistema',
+          ),
+          _buildModernCard(
+            'Enviar Comunicado',
+            Icons.campaign,
+            Colors.orange,
+            AdminSendComunicadoScreen(),
+            'Notificar a residentes',
           ),
         ]),
         
