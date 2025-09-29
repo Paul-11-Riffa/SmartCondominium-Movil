@@ -13,6 +13,7 @@ import 'package:movil/screens/areas_comunes_screen.dart';
 import 'package:movil/screens/solicitudes_mantenimiento_screen.dart';
 import 'package:movil/screens/visitantes_screen.dart';
 import 'package:movil/screens/vehiculos_screen.dart';
+import 'package:movil/screens/reports_home_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -304,6 +305,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Colors.green,
             AccountStatusScreen(),
             'Análisis financiero',
+          ),
+          _buildModernCard(
+            'Reportes y Estadísticas',
+            Icons.bar_chart,
+            Colors.brown,
+            ReportsHomeScreen(),
+            'Genera reportes del sistema',
           ),
         ]),
         
